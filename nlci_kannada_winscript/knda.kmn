@@ -1,0 +1,105 @@
+VERSION 5.0 C  This keyboard will work with Keyman 5.0
+NAME "WINSKANU 1.02"
+BITMAP "knda.bmp"
+HOTKEY   "^+K"
+message "Kannada Phonetic Keyboard"
+
+CAPS ALWAYS OFF
+begin UNICODE > use(main)
+group (main) using keys
++ [K_EQUAL] > deadkey(1)
++ 'X' > deadkey(2)
++ 'x' > deadkey(3)
++ '`' > deadkey(4)
++ 'M' > nul
++ 'H' > nul
+c  + '0' > U+0C95 U+0CCD U+0C82
+c + '0' > U+0C95 U+0CBF U+0CCD
+
+c  + '0' > U+0C95 U+0CCD U+0CD5   c ' A
+ c + '0' > U+0C97   U+0CCD U+0CBF U+0C97
+c  + '0' > U+0C95 U+0CC6 U+0CCD  c U+0CD5
+store (vowel)  'a' 'i' 'u' 'R' '|'     'E'     'O' \
+               'A' 'I' 'U' '^' '_' 'e' 'Y' 'o' 'V'
+store (vowel1)   'i' 'u' 'R' '|'     'E'     'O' \
+               'A' 'I' 'U' '^' '_' 'e' 'Y' 'o' 'V'
+
+store (vowelU) U+0C85 U+0C87 U+0C89 U+0C8B U+0C8C        U+0C8F        U+0C93 \
+               U+0C86 U+0C88 U+0C8A U+0CE0 U+0CE1 U+0C8E U+0C90 U+0C92 U+0C94
+
+store (consonant)   'k' 'K' 'g' 'G' 'W' \
+                    'c' 'C' 'j' 'J' 'w' \
+                    't' 'T' 'd' 'D' 'N' \
+                    'q' 'Q' '[' '{' 'n' \
+                    'p' 'P' 'b' 'B' 'm' \
+                    'y' 'r' 'l' 'L' 'v' 'z' 'Z' 's' 'h'
+
+store (consonantU)  U+0C95 U+0C96 U+0C97 U+0C98 U+0C99  \
+                    U+0C9A U+0C9B U+0C9C U+0C9D U+0C9E  \
+                    U+0C9F U+0CA0 U+0CA1 U+0CA2 U+0CA3  \
+                    U+0CA4 U+0CA5 U+0CA6 U+0CA7 U+0CA8  \
+                    U+0CAA U+0CAB U+0CAC U+0CAD U+0CAE  \
+                    U+0CAF U+0CB0 U+0CB2 U+0CB3 U+0CB5 U+0CB6 U+0CB7 U+0CB8 U+0CB9
+
+store (vowsignU)    U+200C U+0CBF U+0CC1 U+0CC3 U+200C       U+0CC7        U+0CCB \
+                    U+0CBE U+0CC0 U+0CC2 U+0CC4 U+200C U+0CC6 U+0CC8 U+0CCA U+0CCC
+ store (vowsignU1)    U+0CBF U+0CC1 U+0CC3 U+200C       U+0CC7        U+0CCB \
+                    U+0CBE U+0CC0 U+0CC2 U+0CC4 U+200C U+0CC6 U+0CC8 U+0CCA U+0CCC
+
+store (diacriticalmod)  'M' 'H'
+store (diacriticalmodU) U+0C82 U+0C83
+
+store (specialcons)     'P' 'r' 'L'
+store (specialconsU)    U+0CDE U+0CB1 U+0CB1
+
+store (otherchar)   'f' 'F' 'S' ']' '}'
+
+store (number)  '0' '1' '2' '3' '4' '5' '6' '7' '8' '9'
+store (Kannada) U+0CE6 U+0CE7 U+0CE8 U+0CE9 U+0CEA U+0CEB U+0CEC U+0CED U+0CEE U+0CEF
+
++ any(consonant) > index (consonantU,1)
++ any(vowel) > index(vowelU,1)
+ any(consonantU) U+0CCD + 'M' > index(consonantU,1)U+0CCD U+0C82
+ any(consonantU) U+0CCD + any(vowel1) > index(consonantU,1) U+0CCD index(vowsignU1,3)
+ any(consonantU)  any(vowsignU1) + 'M' > index(consonantU,1)  index(vowsignU1,2) U+0C82
+dk(1) + any(specialcons) > index(specialconsU,2)
+dk(4) + any(number) > index(Kannada,2)
+
++ any(otherchar) > beep
+
+any(vowelU) + any(diacriticalmod) > context index(diacriticalmodU,2)
+
+any(consonantU) + any(vowel) > context index(vowsignU,2)
+any(consonantU) + any(diacriticalmod) > context index(diacriticalmodU,2)
+any(consonantU) + 'x' > context U+0CCD
+any(consonantU) U+0CCD + 'x' > context U+200C
+any(consonantU) + 'X' > context U+0CCD U+200C
+
+any(specialconsU) + any(vowel) > context index(vowsignU,2)
+any(specialconsU) + any(diacriticalmod) > context index(diacriticalmodU,2)
+any(specialconsU) + 'x' > context U+0CCD
+any(specialconsU) U+0CCD + 'x' > context U+200C
+any(specialconsU) + 'X' > context U+0CCD U+200C
+
+c Double Consonants with Vowel signs andDiacritical marks
+any(consonantU) U+0CCD any(consonantU) any(vowsignU) + any(diacriticalmod) > context index(diacriticalmodU,5)
+
+dk(1)d32 + any(vowel) > index(vowsignU,3)
+dk(1)d32 + any(diacriticalmod) > index(diacriticalmodU,3)
+dk(1)d32 + 'x' > context d32
+dk(1)d32 d32 + 'x' > U+0CCD
+
+c Double Consonants
++ [shift K_5] > U+0C9C U+0CCD U+0C9E    c 'J' 'x' 'W'
++ [shift K_7] > U+0C95 U+0CCD U+0CB7    c 'k' 'x' 'Z'
++ [shift K_8] > U+0CB6 U+0CCD U+0CB0    c 'z' 'x' 'r'
++ [shift K_4] > U+0CB0 U+0CCD           c Flying R or 'r' 'x'
++ [shift K_3] > U+0CCD U+0CB0           c 'x' 'r'
+
+c Punctuation marks
+"'" + "'" > U+201D    c closing double quotes
+'"' + '"' > U+201C    c opening double quotes
+"-" + "-" > "__"        c Drawing line
+"__"+ '-' > "___"       c Drawing line
++ '>' > U+0964          c Full Stop
+U+0964 + '>' > U+0965   c Paragraph Stop
